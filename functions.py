@@ -44,8 +44,6 @@ def bezout(phiN, e):
         return old_t
 
 
-bezout(120,428860)
-
 
 
 

@@ -37,11 +37,14 @@ class User:
     def encrypt(self, message):
         
         if isinstance(message, str):
-            newmessage = [chr(((ord(char)** self.public) % self.n) - 100) for char in message]
+            newmessage = [chr(ord(char) ** self.public % self.n) for char in message]
             return ''.join(newmessage)
         return (message ** self.public) % self.n
 
     def decrypt(self, message):
+        if isinstance(message, str):
+            newmessage = [chr(ord(char) ** self.private % self.n) for char in message]
+            return ''.join(newmessage)
         return (message ** self.private) % self.n
 
 
@@ -50,6 +53,6 @@ usr = User()
 message = 'This is a sample message to be encoded'
 print('Message: ', message)
 print('Encrypted: ',usr.encrypt(message))
-print('Decrypted: ',usr.decrypt(usr.encrypt(45)))
+print('Decrypted: ',usr.decrypt(usr.encrypt(message)))
 
 
