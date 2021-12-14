@@ -1,31 +1,55 @@
-class keyPair:
-    def __init__(self, public, private):
-        self.public_ = public
-        self.private_ = private
-        self.n = self.public_ * self.private_
-        self.phiN = (self.public_ - 1) * (self.private_ - 1)
+import random
+import csv
+import functions as fn
 
-    def public(self):
-        # public key should always be available
-        return self.public
+class User:
 
-    def private(self, accessCode):
-        # need to authenticate that the user can access this information
-        pass
+    def __init__(self):
+        self.__generateKeys__()
+
+    def __generateKeys__(self, file="primenumbers.csv"):
+        with open(file, 'r') as fp:
+            file = list(csv.reader(fp))
+
+        p = int(file[random.randint(0,len(file))][0])
+        q = int(file[random.randint(0,len(file))][0])
+
+        # try e as random prime as its far more likely to get relative prime to n,phin
+        self.public = int(file[random.randint(0,len(file))][0])
+
+        self.n = p * q
+        phiN = (p-1) * (q-1)
+
+        # if not just update with other random
+        while not fn.relativePrime(self.public, self.n, phiN):
+            self.public = int(file[random.randint(0,len(file))][0])
+
+        # generate private key
+        self.private = fn.bezout(phiN, self.public)
 
 
     def __repr__(self):
-        return "Public: {}\nPrivate: {}\nN: {}\nphiN: {}".format(
-            self.public_, self.private_, self.n, self.phiN
-        )
+        return 'Public: {}\nPrivate: {}'.format(self.public, self.private)
 
     def __str__(self):
-        return "Public: {}\nPrivate: {}\nN: {}\nphiN: {}".format(
-            self.public_, self.private_, self.n, self.phiN
-        )
+        return 'Public: {}\nPrivate: {}'.format(self.public, self.private)
+    
+    def encrypt(self, message):
+        
+        if isinstance(message, str):
+            newmessage = [chr(((ord(char)** self.public) % self.n) - 100) for char in message]
+            return ''.join(newmessage)
+        return (message ** self.public) % self.n
 
-class euclidMap:
-    def __init__(self,rem,multiplier):
-        self.remainder = rem
-        self.multiplier = multiplier
+    def decrypt(self, message):
+        return (message ** self.private) % self.n
+
+
+
+usr = User()
+message = 'This is a sample message to be encoded'
+print('Message: ', message)
+print('Encrypted: ',usr.encrypt(message))
+print('Decrypted: ',usr.decrypt(usr.encrypt(45)))
+
 

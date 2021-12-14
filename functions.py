@@ -8,46 +8,43 @@ def isPrime(num):
             # 2 and n / 2, it is not prime
             if (num % i) == 0:
                 return False
-                break
         else:
             return True
-    
     else:
         return False
 
+
 def GCD(a, b):
-    # Euclids algorithm
+    while(b):
+        a, b = b, a % b
+    return a
 
-    b, a = sorted([a,b])
-    if a % b == 0:
-        return b
+def relativePrime(val1, *args):
+    for val in args:
+        if GCD(val1, val) != 1:
+            return False
+    return True
+      
+def bezout(phiN, e):
+    s = 0; old_s = 1
+    t = 1; old_t = 0
+    r = e; old_r = phiN
 
-    minterms = [(a // b)]
-    minterm = minterms[0] 
-    remainder = a - (minterm * b)
-    while a % remainder != 0:
-        a = b
-        b = remainder
-        minterm = a // b
-        remainder = a - (minterm * b)
-        minterms.append(minterm)
+    while r != 0:
+        quotient = old_r//r # In Python, // operator performs integer or floored division
+        # This is a pythonic way to swap numbers
+        # See the same part in C++ implementation below to know more
+        old_r, r = r, old_r - quotient*r
+        old_s, s = s, old_s - quotient*s
+        old_t, t = t, old_t - quotient*t
 
-    class pair:
-        minterms = minterms
-        remainder = remainder
-
-        def __repr__(self):
-            return "remainder: {}\nminterms {}".format(self.remainder, self.minterms)
-
-        def __str__(self):
-            return "remainder: {}\nminterms {}".format(self.remainder, self.minterms)
-        
-    return pair()
-
-
-    
+    if old_t < 0:
+        return phiN + old_t
+    else:
+        return old_t
 
 
+bezout(120,428860)
 
 
 

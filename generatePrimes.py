@@ -1,6 +1,5 @@
 import functions as fn
 import obj
-import random
 import csv
 
 
@@ -25,18 +24,11 @@ def read():
 
 
 def generatePrimes():
-    # for i in range(10):
-    #     print('{} is prime: {}'.format(i,fn.isPrime(i)))
-    with open('primenumbers.csv', 'r') as fp:
-        file = list(csv.reader(fp))
-        p = int(file[random.randint(0,len(file))][0])
-        q = int(file[random.randint(0,len(file))][0])
-
-    wallet = obj.keyPair(p,q)
+    wallet = obj.User()
     print(wallet)
 
 def test():
-    print(fn.GCD(208,4))
+    print(fn.relativePrime(13,26,6))
 
 
 if __name__ == '__main__':
