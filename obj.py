@@ -49,10 +49,10 @@ class User:
 
 
 
-usr = User()
-message = 'This is a sample message to be encoded'
-print('Message: ', message)
-print('Encrypted: ',usr.encrypt(message))
-print('Decrypted: ',usr.decrypt(usr.encrypt(message)))
+# usr = User()
+# message = 'This is a sample message to be encoded'
+# print('Message: ', message)
+# print('Encrypted: ',usr.encrypt(message))
+# print('Decrypted: ',usr.decrypt(usr.encrypt(message)))
 
 
